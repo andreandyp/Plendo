@@ -2,6 +2,26 @@ doctype html
 html(lang="es")
 	head
 		meta(charset="UTF-8")
-		title Quéjate de la vida en Plendo :D
-		script(src="js/jquery-3.2.1.min.js")
+		title Quéjate de la vida en Plendo 😠
+		script(src="js/jquery.min.js")
+		script(src="js/bootstrap.min.js")
+		script(src="js/vue.js")
+		script(src="js/plendo.js")
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/estilos.css")
 	body
+		div#aplicacion.container-fluid
+			nav.navbar.navbar-default.navbar-fixed-top
+				div.container-fluid
+					div.navbar-header
+						a.navbar-brand(href="#") Plendo
+					ul.nav.navbar-nav
+						li
+							a(href="#") Enlace 1
+						li
+							a(href="#") Enlace 1
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href="#") Hola {{nombre}}
+			div.row
+				div.col-sm-4.col-sm-offset-4

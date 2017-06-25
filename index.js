@@ -1,16 +1,12 @@
 var express = require('express');
 var session = require("express-session");
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //Modelos y passportjs
-var passport = require("passport");
-require("./config/passport")(passport);
-require("./modelos/Queja");
-require("./modelos/Usuario");
 var mongoose = require("mongoose");
 mongoose.connect(process.env.BASE_URL);
 
@@ -32,6 +28,7 @@ app.use(session({secret: "ContraseñaMuyCompleja05042017"}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+//app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 //Rutas
 app.get("/",(req,res) => {
@@ -46,6 +43,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Aplicación ejecutándose en el puerto', app.get('port'));
 });

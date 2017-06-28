@@ -5,23 +5,28 @@ html(lang="es")
 		title Quéjate de la vida en Plendo 😠
 		script(src="js/jquery.min.js")
 		script(src="js/bootstrap.min.js")
+
 		script(src="js/vue.js")
+		//script(src="js/vue.min.js")
+		script(src="js/vue-router.js")
+		//script(src="js/vue-router.min.js")
+		script(src="js/vue-resource.js")
+		//script(src="js/vue-resource.min.js")
+		
 		script(src="js/plendo.js")
 		link(rel="stylesheet", href="css/bootstrap.min.css")
 		link(rel="stylesheet", href="css/estilos.css")
 	body
-		div#aplicacion.container-fluid
+		div#plendo
 			nav.navbar.navbar-default.navbar-fixed-top
 				div.container-fluid
 					div.navbar-header
 						a.navbar-brand(href="#") Plendo
 					ul.nav.navbar-nav
 						li
-							a(href="#") Enlace 1
-						li
-							a(href="#") Enlace 1
+							router-link(to="/autentificar") Únete a Plendo
 					ul.nav.navbar-nav.navbar-right
 						li
-							a(href="#") Hola {{nombre}}
+							a(href="#") Hola
 			div.row
-				div.col-sm-4.col-sm-offset-4
+				router-view Cargando...

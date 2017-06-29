@@ -30,7 +30,7 @@ module.exports = function(passport){
                     if(err){
                         return done("Error en la db: "+err,false);
                     }else{
-                        return done(null,{nuevo: document.usuario, nuevo: usuario.nombre});
+                        return done(null,{nombre: nuevo.nombre, usuario: nuevo.usuario});
                     }
                 });
             }

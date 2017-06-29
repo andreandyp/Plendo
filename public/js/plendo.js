@@ -6,7 +6,7 @@ $(document).ready((jq) => {
                 path: "/", component: {
                     template: "#api",
                     data: function () {
-                        return { quejas: [], cargando: false }
+                        return { quejas: [], cargando: false, nqueja: {}, autentificado: true }
                     },
                     filters: {
                         mostrarFecha: (fecha) => {
@@ -28,11 +28,11 @@ $(document).ready((jq) => {
                         this.cargando = true;
                     },
                     created: function () {
-                        this.$http.get('/api/quejas', ).then((response) => {
+                        this.$http.get('/api/quejas').then((response) => {
                             this.cargando = false;
                             this.quejas = response.body.reverse();
                         }, () => { console.log("Error en resource"); });
-                    }
+                    },
                 }
             },
             {
@@ -48,7 +48,34 @@ $(document).ready((jq) => {
                                 nombre: "",
                                 usuario: "",
                                 contraseña: "",
-                            }
+                            },
+                            errores:{ iniciar: "", registrar: "" }
+                        }
+                    },
+                    methods: {
+                        registrar: function(){
+                            this.$http.post("/autentificar/registrar",{nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña}).then( (response) => {
+                                if(response.body.mensaje){
+                                    this.errores.registrar = response.body.mensaje;
+                                }else{
+                                    this.errores.registrar = "";
+                                    router.push("/");
+                                }
+                            }, (response) => {
+                                console.log("Error en respuesta")
+                            });
+                        },
+                        iniciar: function(){
+                            this.$http.post("/autentificar/iniciar",{usuario: this.datos.usuario, contraseña: this.datos.contraseña}).then( (response) => {
+                                if(response.body.mensaje){
+                                    this.errores.iniciar = response.body.mensaje;
+                                }else{
+                                    this.errores.iniciar = "";
+                                    router.push("/");
+                                }
+                            }, (response) => {
+                                console.log("Error en respuesta")
+                            });
                         }
                     }
                 }

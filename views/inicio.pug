@@ -22,11 +22,31 @@ html(lang="es")
 				div.container-fluid
 					div.navbar-header
 						a.navbar-brand(href="#") Plendo
-					ul.nav.navbar-nav
-						li
-							router-link(to="/autentificar") Únete a Plendo
 					ul.nav.navbar-nav.navbar-right
 						li
-							a(href="#") Hola
-			div.row
-				router-view Cargando...
+							router-link(to="/autentificar") Únete a Plendo
+			router-view
+		template#api
+			div
+				div.col-sm-4.col-sm-offset-4(v-for='queja in quejas')
+					h3 @{{queja.autor}} dice:
+					p {{queja.texto}}
+					small {{queja.fechaHora | mostrarFecha}}
+		template#autentificar
+			div
+				div.col-sm-4
+					h1.text-center Registrate
+					label Nombre:
+					input.form-control(type="text" v-model="nuevo.nombre")
+					label Usuario:
+					input.form-control(type="text" v-model="nuevo.usuario")
+					label Contraseña:
+					input.form-control(type="password" v-model="nuevo.contraseña")
+				div.col-sm-4
+					h1.text-center Inicia sesión
+					label Usuario:
+					input.form-control(type="text" v-model="datos.usuario")
+					label Contraseña:
+					input.form-control(type="password" v-model="datos.contraseña")
+				div.col-sm-4
+					h1.text-center Ingresa via Twitter

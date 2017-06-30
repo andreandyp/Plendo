@@ -1,9 +1,9 @@
 $(document).ready((jq) => {
 
-    
+    //Estados y transiciones    
     const maquina = new Vuex.Store({
-        state: { quejas: [], usuario: {nombre: "Andy", usuario: "Andy17"}, autentificado: false, cargando: false, queja: "" },
-        mutations:{
+        state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false, queja: "", errores: { iniciar: "", registrar: ""} },
+        mutations: {
             obtenerQuejas(state) {
                 state.cargando = true;
                 Vue.http.get('/api/quejas').then((response) => {
@@ -11,7 +11,7 @@ $(document).ready((jq) => {
                     state.cargando = false;
                 }, () => { console.log("Error al cargar las quejas"); });
             },
-            quejar(state,queja){
+            quejar(state, queja) {
                 state.queja = queja;
             },
             subirQueja(state) {
@@ -38,18 +38,36 @@ $(document).ready((jq) => {
                 }, (response) => {
                     console.log("Error al validar sesión");
                 });
+            },
+            iniciar(state, credenciales) {
+                state.cargando = true;
+                Vue.http.post("/autentificar/iniciar", credenciales).then((response) => {
+                    state.cargando = false;
+                    if (!response.body.mensaje) {
+                        state.usuario = response.body;
+                        state.autentificado = true;
+                        state.errores.iniciar = "";
+                        router.push("/");
+                    } else {
+                        console.log("No inicia");
+                        state.errores.iniciar = response.body.mensaje;
+                    }
+                }, (response) => {
+                    console.log("Error al iniciar sesión");
+                });
             }
         }
     });
 
+    //Componente para la API
     var api = {
         template: "#api",
-        computed:{
-            autentificado(){ return maquina.state.autentificado; },
+        computed: {
+            autentificado() { return maquina.state.autentificado; },
             cargando() { return maquina.state.cargando; },
-            queja:{ 
+            queja: {
                 get() { return maquina.state.queja; },
-                set(valor) { maquina.commit("quejar",valor) }
+                set(valor) { maquina.commit("quejar", valor) }
             },
             quejas() { return maquina.state.quejas; }
         },
@@ -73,34 +91,64 @@ $(document).ready((jq) => {
             maquina.commit("obtenerQuejas");
         },
         methods: {
-            subirQueja(){
+            subirQueja() {
                 maquina.commit("subirQueja");
             }
         }
     };
 
+    //Componente autentificar
+    var autentificar = {
+        template: "#autentificar",
+        data()  { 
+            return {datos: { usuario: "", contraseña: "" }};
+        },
+        computed: {
+            errores() { return maquina.state.errores; },
+            cargando() { return maquina.state.cargando; },
+        },
+        methods: {
+            registrar: function () {
+                /*this.cargando = true;
+                this.$http.post("/autentificar/registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña }).then((response) => {
+                    this.cargando = false;
+                    if (response.body.mensaje) {
+                        this.errores.registrar = response.body.mensaje;
+                    } else {
+                        this.errores.registrar = "";
+                        router.push("/");
+                    }
+                }, (response) => {
+                    console.log("Error al registrar")
+                });*/
+            },
+            iniciar: function () {
+                maquina.commit("iniciar", { usuario: this.datos.usuario, contraseña: this.datos.contraseña });
+            }
+        }
+    }
+
+    //Enrutamiento
     const router = new VueRouter({
         routes: [
-            { path: "/", component: Vue.component("api",api) },
-            //{ path: "/autentificar", component: Vue.component("autentificar",autentificar) }
+            { path: "/", component: Vue.component("api", api) },
+            { path: "/autentificar", component: Vue.component("autentificar",autentificar) }
         ]
     });
 
+    //Instancia de Vue
     const app = new Vue({
         el: "#plendo",
         router: router,
         computed: {
-            autentificado(){ return maquina.state.autentificado; },
+            autentificado() { return maquina.state.autentificado; },
             nombre() { return maquina.state.usuario.nombre; }
         },
-        /*mounted: function () {
+        mounted: function () {
             maquina.commit("verificar");
         },
-        updated: function () {
-            maquina.commit("verificar");
-        },*/
         methods: {
-            salir(){
+            salir() {
                 maquina.commit("salir");
             }
         }

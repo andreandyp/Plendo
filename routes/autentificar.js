@@ -14,7 +14,7 @@ module.exports = (passport) => {
                 res.json({mensaje: err});
             }else{
                 req.logIn(usuario,() => {
-                    res.redirect("/autentificar/exito");
+                    res.json(usuario);
                 });
             }
         })(req,res,next);
@@ -26,7 +26,7 @@ module.exports = (passport) => {
                 res.json({mensaje: err});
             }else{
                 req.logIn(usuario,() => {
-                    res.redirect("/autentificar/exito");
+                    res.json(usuario);
                 });
             }
         })(req,res,next);

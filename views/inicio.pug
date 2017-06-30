@@ -51,10 +51,10 @@ html(lang="es")
 					h3 @{{queja.autor}} dice:
 					p {{queja.texto}}
 					small {{queja.fechaHora | mostrarFecha}}
-	//	template#autentificar
+		template#autentificar
 			div
 				h1(v-if="cargando" v-once) Cargando...
-				div.col-sm-4
+				//div.col-sm-4
 					form(v-on:submit.prevent="registrar")
 						p.error.text-center(v-once) {{errores.registrar}}
 						h1.text-center Registrate

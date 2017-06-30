@@ -2,7 +2,7 @@ $(document).ready((jq) => {
 
     //Estados y transiciones    
     const maquina = new Vuex.Store({
-        state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false, queja: "", errores: { iniciar: "", registrar: ""} },
+        state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false, errores: { iniciar: "", registrar: ""} },
         mutations: {
             obtenerQuejas(state) {
                 state.cargando = true;
@@ -11,14 +11,43 @@ $(document).ready((jq) => {
                     state.cargando = false;
                 }, () => { console.log("Error al cargar las quejas"); });
             },
-            quejar(state, queja) {
-                state.queja = queja;
-            },
-            subirQueja(state) {
-                Vue.http.post("/api/quejas", { autor: state.usuario.usuario, texto: state.queja }).then((response) => {
+            subirQueja(state,queja) {
+                Vue.http.post("/api/quejas", { autor: state.usuario.usuario, texto: queja }).then((response) => {
                     state.quejas.unshift(response.body);
                 }, (response) => {
                     console.log("Error en la db");
+                });
+            },
+            iniciar(state, credenciales) {
+                state.cargando = true;
+                Vue.http.post("/autentificar/iniciar", credenciales).then((response) => {
+                    state.cargando = false;
+                    if (!response.body.mensaje) {
+                        state.usuario = response.body;
+                        state.autentificado = true;
+                        state.errores.iniciar = "";
+                        router.push("/");
+                    } else {
+                        state.errores.iniciar = response.body.mensaje;
+                    }
+                }, (response) => {
+                    console.log("Error al iniciar sesión");
+                });
+            },
+            registrar(state, datos) {
+                state.cargando = true;
+                Vue.http.post("/autentificar/registrar", datos).then((response) => {
+                    state.cargando = false;
+                    if (!response.body.mensaje) {
+                        state.usuario = response.body;
+                        state.autentificado = true;
+                        state.errores.registrar = "";
+                        router.push("/");
+                    } else {
+                        state.errores.registrar = response.body.mensaje;
+                    }
+                }, (response) => {
+                    console.log("Error al iniciar sesión");
                 });
             },
             salir(state) {
@@ -38,23 +67,6 @@ $(document).ready((jq) => {
                 }, (response) => {
                     console.log("Error al validar sesión");
                 });
-            },
-            iniciar(state, credenciales) {
-                state.cargando = true;
-                Vue.http.post("/autentificar/iniciar", credenciales).then((response) => {
-                    state.cargando = false;
-                    if (!response.body.mensaje) {
-                        state.usuario = response.body;
-                        state.autentificado = true;
-                        state.errores.iniciar = "";
-                        router.push("/");
-                    } else {
-                        console.log("No inicia");
-                        state.errores.iniciar = response.body.mensaje;
-                    }
-                }, (response) => {
-                    console.log("Error al iniciar sesión");
-                });
             }
         }
     });
@@ -65,11 +77,10 @@ $(document).ready((jq) => {
         computed: {
             autentificado() { return maquina.state.autentificado; },
             cargando() { return maquina.state.cargando; },
-            queja: {
-                get() { return maquina.state.queja; },
-                set(valor) { maquina.commit("quejar", valor) }
-            },
             quejas() { return maquina.state.quejas; }
+        },
+        data(){
+            return { queja: "" };
         },
         filters: {
             mostrarFecha: (fecha) => {
@@ -92,7 +103,7 @@ $(document).ready((jq) => {
         },
         methods: {
             subirQueja() {
-                maquina.commit("subirQueja");
+                maquina.commit("subirQueja",this.queja);
             }
         }
     };
@@ -101,7 +112,10 @@ $(document).ready((jq) => {
     var autentificar = {
         template: "#autentificar",
         data()  { 
-            return {datos: { usuario: "", contraseña: "" }};
+            return {
+                datos: { usuario: "", contraseña: "" },
+                nuevo: { nombre: "", usuario: "", contraseña: "" }
+            };
         },
         computed: {
             errores() { return maquina.state.errores; },
@@ -109,18 +123,7 @@ $(document).ready((jq) => {
         },
         methods: {
             registrar: function () {
-                /*this.cargando = true;
-                this.$http.post("/autentificar/registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña }).then((response) => {
-                    this.cargando = false;
-                    if (response.body.mensaje) {
-                        this.errores.registrar = response.body.mensaje;
-                    } else {
-                        this.errores.registrar = "";
-                        router.push("/");
-                    }
-                }, (response) => {
-                    console.log("Error al registrar")
-                });*/
+                maquina.commit("registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña });
             },
             iniciar: function () {
                 maquina.commit("iniciar", { usuario: this.datos.usuario, contraseña: this.datos.contraseña });

@@ -54,9 +54,9 @@ html(lang="es")
 		template#autentificar
 			div
 				h1(v-if="cargando" v-once) Cargando...
-				//div.col-sm-4
+				div.col-sm-4
 					form(v-on:submit.prevent="registrar")
-						p.error.text-center(v-once) {{errores.registrar}}
+						p.error.text-center {{errores.registrar}}
 						h1.text-center Registrate
 						label Nombre:
 						input.form-control(type="text" v-model="nuevo.nombre")
@@ -68,7 +68,7 @@ html(lang="es")
 						input.btn.btn-default(type="submit" value="Registrar")
 				div.col-sm-4
 					form(v-on:submit.prevent="iniciar")
-						p.error.text-center(v-once) {{errores.iniciar}}
+						p.error.text-center {{errores.iniciar}}
 						h1.text-center Inicia sesión
 						label Usuario:
 						input.form-control(type="text" v-model="datos.usuario")
@@ -79,4 +79,4 @@ html(lang="es")
 				div.col-sm-4
 					form
 						h1.text-center Ingresa via Twitter
-						input.btn.btn-info.center-block(type="submit" value="Twitter")
+						input.btn.btn-info.center-block(type="submit" value="En construcción")

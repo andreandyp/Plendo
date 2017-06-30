@@ -9,11 +9,14 @@ html(lang="es")
 		script(src="js/vue.js")
 		script(src="js/vue-router.js")
 		script(src="js/vue-resource.js")
+		script(src="js/vuex.js")
 
 		
 		//script(src="js/vue.min.js")
+			script(src="js/vuex.min.js")
 			script(src="js/vue-router.min.js")
 			script(src="js/vue-resource.min.js")
+			
 		
 		script(src="js/plendo.js")
 		link(rel="stylesheet", href="css/bootstrap.min.css")
@@ -25,26 +28,35 @@ html(lang="es")
 					div.navbar-header
 						a.navbar-brand(href="#") Plendo
 					ul.nav.navbar-nav.navbar-right
-						li
+						li(v-if="autentificado")
+							p.navbar-text(v-once) Hola {{nombre}}
+						li(v-if="autentificado")
+							a(href="#" v-on:click="salir" v-once) Salir
+						li(v-else)
 							router-link(to="/autentificar") Únete a Plendo
 			router-view
+				api
+				autentificar
+			
 		//Componentes para enrutamiento
 		template#api
 			div
+				p(v-if="cargando" v-once) Cargando...
 				div.col-sm-4.col-sm-offset-4(v-if="autentificado")
-					form
+					form(@submit.prevent = "subirQueja")
 						h2 Quéjate libremente:
-						textarea.form-control(v-model="nqueja.texto")
+						textarea.form-control(v-model="queja")
 						input.btn.btn-default(type="submit" value="¡Quéjate!")
 				div.col-sm-4.col-sm-offset-4(v-for="queja in quejas")
 					h3 @{{queja.autor}} dice:
 					p {{queja.texto}}
 					small {{queja.fechaHora | mostrarFecha}}
-		template#autentificar
+	//	template#autentificar
 			div
+				h1(v-if="cargando" v-once) Cargando...
 				div.col-sm-4
-					p.error.text-center {{errores.registrar}}
-					form(v-on:submit="registrar")
+					form(v-on:submit.prevent="registrar")
+						p.error.text-center(v-once) {{errores.registrar}}
 						h1.text-center Registrate
 						label Nombre:
 						input.form-control(type="text" v-model="nuevo.nombre")
@@ -55,8 +67,8 @@ html(lang="es")
 						br
 						input.btn.btn-default(type="submit" value="Registrar")
 				div.col-sm-4
-					p.error.text-center {{errores.iniciar}}
-					form(v-on:submit="iniciar")
+					form(v-on:submit.prevent="iniciar")
+						p.error.text-center(v-once) {{errores.iniciar}}
 						h1.text-center Inicia sesión
 						label Usuario:
 						input.form-control(type="text" v-model="datos.usuario")

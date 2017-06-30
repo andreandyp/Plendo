@@ -33,7 +33,6 @@ module.exports = (passport) => {
     });
     
     router.get("/salir",(req,res) => {
-        req.destroy();
         req.logout();
         res.redirect("/");
     });

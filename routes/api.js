@@ -30,6 +30,8 @@ quejas.post( (req,res) => {
     nueva.save( (err,nueva) => {
         if(err){
             res.status(500).json({mensaje: "Error en la db: "+err});
+        }else{
+            res.send(nueva);
         }
     });
 });

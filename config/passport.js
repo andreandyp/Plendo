@@ -46,7 +46,7 @@ module.exports = function(passport){
             }
 
             if(validarClave(document,contraseña)){
-                return done(null,{usuario: document.usuario, nombre: usuario.nombre});
+                return done(null,{usuario: document.usuario, nombre: document.nombre});
             }
             else{
                 return done("Contraseña incorrecta",false);

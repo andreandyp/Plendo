@@ -5,7 +5,6 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var expressVue = require("express-vue");
 
 //Modelos y passportjs
 var mongoose = require("mongoose");
@@ -17,18 +16,9 @@ var autentificar = require('./routes/autentificar')(passport);
 
 var app = express();
 
-
 app.set('port', (process.env.PORT || 5000));
 
-
 app.set('views', path.join(__dirname, 'views'));
-
-/*app.set("vue",{
-  defaultLayout:"plendo"
-});
-app.engine("vue",expressVue);
-app.set('view engine', 'vue');*/
-
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));

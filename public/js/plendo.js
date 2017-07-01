@@ -1,5 +1,5 @@
 $(document).ready((jq) => {
-
+    $(".button-collapse").sideNav();
     //Estados y transiciones    
     const maquina = new Vuex.Store({
         state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false, errores: { iniciar: "", registrar: ""} },
@@ -134,8 +134,8 @@ $(document).ready((jq) => {
     //Enrutamiento
     const router = new VueRouter({
         routes: [
-            { path: "/", component: Vue.component("api", api) },
-            { path: "/autentificar", component: Vue.component("autentificar",autentificar) }
+            { path: "/", component: api },
+            { path: "/autentificar", component: autentificar }
         ]
     });
 

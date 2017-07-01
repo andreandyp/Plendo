@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
+  "name": "Plendo",
+  "description": "Una red social en la que te puedes quejar de lo que quieras",
+  "repository": "https://git.heroku.com/plendo.git",
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "heroku"],
+  "keywords": ["mongo","express","vue","node","heroku"],
   "image": "heroku/nodejs"
 }

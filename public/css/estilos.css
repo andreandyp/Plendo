@@ -1,0 +1,4 @@
+textarea:focus{
+    border-bottom: 1px solid #fb8c00;
+    box-shadow: 0 1px 0 0 #fb8c00;
+}

@@ -16,8 +16,8 @@ html(lang="es")
 		link(href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
 		link(rel="stylesheet", href="css/materialize.min.css")
 		link(rel="stylesheet", href="css/estilos.css")
-	body
-		div#plendo.orange.lighten-4
+	body.orange.lighten-4
+		div#plendo
 			div.navbar-fixed
 				nav.orange.accent-3
 					div.nav-wrapper
@@ -38,30 +38,28 @@ html(lang="es")
 								a(href="#" v-on:click="salir") Salir
 							li(v-else)
 								router-link(to="/autentificar") Únete a Plendo
+			div.progress(v-if="cargando")
+				div.indeterminate.orange.darken-2
 			router-view
 
 		//Componentes para enrutamiento
 		template#api
-			div.container
-				p(v-if="cargando" v-once) Cargando...
-				div.row
-					div.col.s12.m12(v-if="autentificado")
-						form(@submit.prevent = "subirQueja")
-							h2 Quéjate libremente:
-							textarea.form-control(v-model="queja")
-							input.btn.btn-default(type="submit" value="¡Quéjate!")
-					div.col.s12.m12(v-for="queja in quejas")
-						h3 @{{queja.autor}} dice:
-						p {{queja.texto}}
-						small {{queja.fechaHora | mostrarFecha}}
-
+			div.row
+				div.col.s12.m10.offset-m1(v-if="autentificado")
+					form(@submit.prevent = "subirQueja")
+						h1.center-align Quéjate libremente
+						textarea#queja.materialize-textarea(v-model="queja")
+						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="¡Quéjate!")
+				div.col.s12.m10.offset-m1(v-for="queja in quejas")
+					h4 @{{queja.autor}} dice:
+					p {{queja.texto}}
+					p.right-align {{queja.fechaHora | mostrarFecha}}
 		template#autentificar
-			div
-				h1(v-if="cargando" v-once) Cargando...
-				div.col-sm-4
+			div.row
+				div.col.s12.m4
 					form(v-on:submit.prevent="registrar")
-						p.error.text-center {{errores.registrar}}
-						h1.text-center Registrate
+						p.error.center-align {{errores.registrar}}
+						h3.center-align Registrate
 						label Nombre:
 						input.form-control(type="text" v-model="nuevo.nombre")
 						label Usuario:
@@ -69,18 +67,18 @@ html(lang="es")
 						label Contraseña:
 						input.form-control(type="password" v-model="nuevo.contraseña")
 						br
-						input.btn.btn-default(type="submit" value="Registrar")
-				div.col-sm-4
+						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="Registrar")
+				div.col.s12.m4
 					form(v-on:submit.prevent="iniciar")
 						p.error.text-center {{errores.iniciar}}
-						h1.text-center Inicia sesión
+						h3.center-align Inicia sesión
 						label Usuario:
 						input.form-control(type="text" v-model="datos.usuario")
 						label Contraseña:
 						input.form-control(type="password" v-model="datos.contraseña")
 						br
-						input.btn.btn-default(type="submit" value="Iniciar")
-				div.col-sm-4
+						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="Iniciar")
+				div.col.s12.m4
 					form
-						h1.text-center Ingresa via Twitter
-						input.btn.btn-info.center-block(type="submit" value="En construcción")
+						h3.center-align Ingresa via Twitter
+						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="En construcción")

@@ -22,7 +22,7 @@ $(document).ready((jq) => {
                 state.cargando = true;
                 Vue.http.post("/autentificar/iniciar", credenciales).then((response) => {
                     state.cargando = false;
-                    if (!response.body.mensaje) {
+                    if (response.body.mensaje !== null) {
                         state.usuario = response.body;
                         state.autentificado = true;
                         state.errores.iniciar = "";
@@ -38,7 +38,7 @@ $(document).ready((jq) => {
                 state.cargando = true;
                 Vue.http.post("/autentificar/registrar", datos).then((response) => {
                     state.cargando = false;
-                    if (!response.body.mensaje) {
+                    if (response.body.mensaje !== null) {
                         state.usuario = response.body;
                         state.autentificado = true;
                         state.errores.registrar = "";
@@ -76,7 +76,6 @@ $(document).ready((jq) => {
         template: "#api",
         computed: {
             autentificado() { return maquina.state.autentificado; },
-            cargando() { return maquina.state.cargando; },
             quejas() { return maquina.state.quejas; }
         },
         data(){
@@ -119,7 +118,6 @@ $(document).ready((jq) => {
         },
         computed: {
             errores() { return maquina.state.errores; },
-            cargando() { return maquina.state.cargando; },
         },
         methods: {
             registrar: function () {
@@ -145,7 +143,8 @@ $(document).ready((jq) => {
         router: router,
         computed: {
             autentificado() { return maquina.state.autentificado; },
-            nombre() { return maquina.state.usuario.nombre; }
+            nombre() { return maquina.state.usuario.nombre; },
+            cargando() { return maquina.state.cargando; }
         },
         mounted: function () {
             maquina.commit("verificar");

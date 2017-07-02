@@ -3,12 +3,13 @@ var router = express.Router();
 
 var mongoose = require("mongoose");
 var Queja = mongoose.model("Queja");
+var Usuario = mongoose.model("Usuario");
 
 var middleware = function(req,res,next){
     if(req.method === "GET" || req.isAuthenticated()){
         return next();
     }else{
-        res.redirect("/#iniciar");
+        res.redirect("/");
     }
 }
 router.use("/quejas",middleware);
@@ -18,6 +19,12 @@ var quejas = router.route("/quejas");
 
 quejas.get( (req,res) => {
     Queja.find( (err,datos) => {
+        /*for(let i = 0; i < datos.length; i++){
+            Usuario.find({usuario: datos[i].autor},{nombre: 1}, (err, nombres) => {
+                datos[i].toObject();
+                datos[i]["nombre"] = nombres[0].nombre;
+            });
+        }*/
         return res.send(datos);
     });
 });

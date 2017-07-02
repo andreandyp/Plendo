@@ -10,20 +10,19 @@ html(lang="es")
 		script(src="js/vue-router.min.js")
 		script(src="js/vue-resource.min.js")
 		
-		script(src="js/materialize.min.js")
-		script(src="js/plendo.js")
-		
 		link(href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
 		link(rel="stylesheet", href="css/materialize.min.css")
 		link(rel="stylesheet", href="css/estilos.css")
+
+		script(src="js/materialize.min.js")
+		script(src="js/plendo.js")
+		
 	body.orange.lighten-4
 		div#plendo
 			div.navbar-fixed
-				nav.orange.accent-3
+				nav.orange.accent-4
 					div.nav-wrapper
-						a.brand-logo(href="/") Plendo
-						a.button-collapse(href="#", data-activates="mobile-demo")
-							i.material-icons menu
+						a.brand-logo.center(href="/") Plendo
 						ul.right.hide-on-med-and-down
 							li(v-if="autentificado")
 								router-link(to="/usuario" v-once) Hola {{nombre}}
@@ -31,54 +30,63 @@ html(lang="es")
 								a(href="#" v-on:click="salir") Salir
 							li(v-else)
 								router-link(to="/autentificar") Únete a Plendo
-						ul#mobile-demo.side-nav
-							li(v-if="autentificado")
-								p.navbar-text(v-once) Hola {{nombre}}
-							li(v-if="autentificado")
-								a(href="#" v-on:click="salir") Salir
-							li(v-else)
-								router-link(to="/autentificar") Únete a Plendo
+						a.button-collapse(href="#", data-activates="lateral")
+							i.material-icons menu
+			ul#lateral.side-nav
+				li(v-if="autentificado")
+					router-link(to="/usuario" v-once) Hola {{nombre}}
+				li(v-if="autentificado")
+					a(href="#" v-on:click="salir") Salir
+				li(v-else)
+					router-link(to="/autentificar") Únete a Plendo
 			div.progress(v-if="cargando")
-				div.indeterminate.orange.darken-2
+				div.indeterminate.orange.accent-4
 			router-view
 
-		//Componentes para enrutamiento
+		//Componente API para enrutamiento
 		template#api
 			div.row
 				div.col.s12.m10.offset-m1(v-if="autentificado")
 					form(@submit.prevent = "subirQueja")
 						h1.center-align Quéjate libremente
 						textarea#queja.materialize-textarea(v-model="queja")
-						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="¡Quéjate!")
-				div.col.s12.m10.offset-m1(v-for="queja in quejas")
-					h4 @{{queja.autor}} dice:
+						input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="¡Quéjate!")
+				div.col.s12.m10.offset-m1.queja(v-for="queja in quejas")
+					h5
+						strong {{queja.nombre}}
+						| @{{queja.autor}} dice:
 					p {{queja.texto}}
 					p.right-align {{queja.fechaHora | mostrarFecha}}
+
+		//Componente autentificar para enrutamiento
 		template#autentificar
 			div.row
 				div.col.s12.m4
 					form(v-on:submit.prevent="registrar")
 						p.error.center-align {{errores.registrar}}
 						h3.center-align Registrate
-						label Nombre:
-						input.form-control(type="text" v-model="nuevo.nombre")
-						label Usuario:
-						input.form-control(type="text" v-model="nuevo.usuario")
-						label Contraseña:
-						input.form-control(type="password" v-model="nuevo.contraseña")
-						br
-						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="Registrar")
+						div.input-field
+							input#n-nombre.form-control(type="text" v-model="nuevo.nombre")
+							label(for="n-nombre") Nombre
+						div.input-field
+							input#n-usuario.form-control(type="text" v-model="nuevo.usuario")
+							label(for="n-usuario") Usuario
+						div.input-field
+							input#n-contrasena.form-control(type="password" v-model="nuevo.contraseña")
+							label(for="n-contrasena") Contraseña
+						input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="Registrar")
 				div.col.s12.m4
 					form(v-on:submit.prevent="iniciar")
 						p.error.text-center {{errores.iniciar}}
 						h3.center-align Inicia sesión
-						label Usuario:
-						input.form-control(type="text" v-model="datos.usuario")
-						label Contraseña:
-						input.form-control(type="password" v-model="datos.contraseña")
-						br
-						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="Iniciar")
-				div.col.s12.m4
+						div.input-field
+							input#usuario.form-control(type="text" v-model="datos.usuario")
+							label(for="usuario") Usuario
+						div.input-field
+							input#contrasena.form-control(type="password" v-model="datos.contraseña")
+							label(for="contrasena") Contraseña
+						input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="Iniciar")
+				div.col.s12.m4.center-align
 					form
-						h3.center-align Ingresa via Twitter
-						input.btn.waves-effect.waves-light.orange.darken-2(type="submit" value="En construcción")
+						h3 Ingresa via Twitter
+						input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="En construcción")

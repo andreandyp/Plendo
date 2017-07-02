@@ -1,5 +1,4 @@
 $(document).ready((jq) => {
-    $(".button-collapse").sideNav();
     //Estados y transiciones    
     const maquina = new Vuex.Store({
         state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false, errores: { iniciar: "", registrar: ""} },
@@ -85,15 +84,15 @@ $(document).ready((jq) => {
             mostrarFecha: (fecha) => {
                 fecha = new Date(fecha);
                 var fechaHora = [];
-                fechaHora.push(fecha.getDate());
+                fechaHora.push(fecha.getDate() < 10 ? "0"+fecha.getDate() : fecha.getDate() );
                 fechaHora.push("/");
-                fechaHora.push(fecha.getMonth() + 1);
+                fechaHora.push( (fecha.getMonth() + 1) < 10  ? "0"+(fecha.getMonth() + 1) : fecha.getMonth() + 1 );
                 fechaHora.push("/");
                 fechaHora.push(fecha.getFullYear());
                 fechaHora.push(" a las ");
                 fechaHora.push(fecha.getHours());
                 fechaHora.push(":");
-                fechaHora.push(fecha.getMinutes());
+                fechaHora.push(fecha.getMinutes() < 10 ? "0"+fecha.getMinutes() : fecha.getMinutes() );
                 return fechaHora.join("");
             }
         },
@@ -154,5 +153,6 @@ $(document).ready((jq) => {
                 maquina.commit("salir");
             }
         }
-    })
+    });
+    $(".button-collapse").sideNav();
 });

@@ -154,5 +154,5 @@ $(document).ready((jq) => {
             }
         }
     });
-    $(".button-collapse").sideNav();
+    $(".button-collapse").sideNav({closeOnClick: true, menuWidth: 250});
 });

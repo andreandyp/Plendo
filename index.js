@@ -7,8 +7,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //Modelos y passportjs
-var mongoose = require("mongoose");
-mongoose.connect(process.env.BASE_URL);
+var mongo = require("./config/base").conectar();
+var passport = require("passport");
+require("./config/passport-config")(passport);
 
 //Rutas
 var api = require('./routes/api');

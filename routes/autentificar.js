@@ -11,7 +11,7 @@ module.exports = (passport) => {
     router.post("/iniciar",(req,res,next) => {
         passport.authenticate("iniciar",(err,usuario) => {
             if(!usuario){
-                res.json({mensaje: err});
+                res.json({error: err});
             }else{
                 req.logIn(usuario,() => {
                     res.json(usuario);
@@ -23,7 +23,7 @@ module.exports = (passport) => {
     router.post("/registrar",(req,res,next) => {
         passport.authenticate("registrar",(err,usuario) => {
             if(!usuario){
-                res.json({mensaje: err});
+                res.json({error: err});
             }else{
                 req.logIn(usuario,() => {
                     res.json(usuario);

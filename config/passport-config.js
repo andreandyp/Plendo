@@ -1,9 +1,6 @@
 var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt-nodejs");
-var mongoose = require("mongoose");
-
-var Usuario = mongoose.model("Usuario");
-var Queja = mongoose.model("Queja");
+var db = require("./base");
 
 module.exports = function(passport){
 
@@ -16,37 +13,43 @@ module.exports = function(passport){
     });
 
     passport.use("registrar", new LocalStrategy({usernameField: "usuario", passwordField: "contraseña", passReqToCallback: true}, (req,usuario,contraseña,done) => {
-        Usuario.findOne({usuario: usuario},(err,document) => {
+        
+        db.get().collection("usuarios").findOne({ usuario: usuario }, {usuario: 1},
+        (err, doc) => {
             if(err){
                 return done("Error en la db: "+err,false);
-            } else if(document){
-                return done("El usuario ya existe",false);    
+            } else if(doc){
+                return done("El usuario ya existe",false);
             }else{
-                var nuevo = new Usuario();
-                nuevo.nombre = req.body.nombre;
-                nuevo.usuario = usuario;
-                nuevo.contraseña = crearHash(contraseña);
-                nuevo.save( (err,nuevo) => {
+                var nuevo = {
+                    nombre: req.body.nombre,
+                    usuario: usuario,
+                    contraseña: crearHash(contraseña),
+                    fechaHora: new Date(Date.now()),
+                    quejas: []
+                }
+                db.get().collection("usuarios").insertOne(nuevo, (err, doc) => {
                     if(err){
                         return done("Error en la db: "+err,false);
                     }else{
                         return done(null,{nombre: nuevo.nombre, usuario: nuevo.usuario});
                     }
-                });
+                })
             }
         });
     }));
 
     passport.use("iniciar", new LocalStrategy({usernameField: "usuario", passwordField: "contraseña",passReqToCallback: true}, (req,usuario,contraseña,done) => {
-        Usuario.findOne({usuario: usuario},(err,document) => {
-            if(err){
-                return done("Error en la db: "+err,false);
-            }else if(!document){
-                return done("El usuario no existe",false);
-            }
 
-            if(validarClave(document,contraseña)){
-                return done(null,{usuario: document.usuario, nombre: document.nombre});
+        db.get().collection("usuarios").findOne({ usuario: usuario }, { usuario: 1, nombre: 1, contraseña: 1},
+        (err, doc) => {
+            if(err){
+                return done("Error en la db: "+err, false);
+            }else if(!doc){
+                return done("El usuario no existe", false);
+            }
+            if(validarClave(contraseña, doc.contraseña)){
+                return done(null,{nombre: doc.nombre, usuario: doc.usuario});
             }
             else{
                 return done("Contraseña incorrecta",false);
@@ -54,8 +57,8 @@ module.exports = function(passport){
         });
     }));
 
-    function validarClave(usuario, contraseña){
-		return bcrypt.compareSync(contraseña, usuario.contraseña);
+    function validarClave(contraseña, hash){
+		return bcrypt.compareSync(contraseña, hash);
 	};
 
 	function crearHash(contraseña){

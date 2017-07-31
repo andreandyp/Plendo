@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Rutas
 app.get("/",(req,res) => {
-  res.render("inicio");
+  res.render("inicio2");
 });
 app.use('/api', api);
 app.use('/autentificar', autentificar);

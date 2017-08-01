@@ -4,10 +4,10 @@ div
 	div.navbar-fixed
 		nav.orange.accent-4
 			div.nav-wrapper
-				a.brand-logo.center(href="/") Plendo {{ hue }}
+				a.brand-logo.center(href="/") Plendo
 				ul.right.hide-on-med-and-down
 					li(v-if="$store.state.autentificado")
-						router-link(to="#" v-once) Hola {{ $store.state.nombre }}
+						router-link(to="#" v-once) Hola {{ $store.state.usuario.nombre }}
 					li(v-if="$store.state.autentificado")
 						a(href="#" v-on:click="salir") Salir
 					li(v-else)
@@ -19,7 +19,7 @@ div
 			div.user-view
 				router-link(to="#" v-once)
 					span.black-text.name 
-					| Hola {{ $store.state.nombre }}
+					| Hola {{ $store.state.usuario.nombre }}
 		li(v-if="$store.state.autentificado")
 			a(href="#" v-on:click="salir") Salir
 		li(v-else)
@@ -33,4 +33,20 @@ div
 </template>
 
 <script>
+export default{
+	methods: {
+		salir() {
+            this.$store.commit("salir");
+        }
+	},
+	created () {
+		this.$store.commit("verificar");
+	}
+}
 </script>
+
+<style>
+.progress{
+    background-color: #ffe0b2;
+}
+</style>

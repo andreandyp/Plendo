@@ -48,3 +48,13 @@ export default{
     }
 }
 </script>
+
+<style>
+.input-field input:focus + label {
+    color: #ff6d00 !important;
+}
+.input-field input:focus {
+    border-bottom: 1px solid #ff6d00 !important;
+    box-shadow: 0 1px 0 0 #ff6d00 !important;
+}
+</style>

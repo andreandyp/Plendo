@@ -22,7 +22,7 @@ gulp.task("vuec", () => {
 gulp.task("vuep", () => {
     var b = browserify({
         entries: "./views/plendo.js",
-        transform: [vueify, ["babelify", { "presets": ["es2015"] }]]
+        transform: [ ["babelify", { "presets": ["es2015"] }], vueify]
     });
     return b.bundle()
             .pipe(source("plendo.min.js"))

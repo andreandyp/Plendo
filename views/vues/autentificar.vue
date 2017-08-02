@@ -40,7 +40,7 @@ export default{
 	},
 	methods: {
         registrar() {
-            this.$store.commit("registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña });
+			this.$store.commit("registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña });
         },
         iniciar() {
 			this.$store.commit("iniciar", { usuario: this.datos.usuario, contraseña: this.datos.contraseña });

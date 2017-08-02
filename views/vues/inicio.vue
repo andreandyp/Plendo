@@ -9,7 +9,7 @@ div
 					li(v-if="$store.state.autentificado")
 						router-link(to="#" v-once) Hola {{ $store.state.usuario.nombre }}
 					li(v-if="$store.state.autentificado")
-						a(href="#" v-on:click="salir") Salir
+						a(href="/" v-on:click="salir") Salir
 					li(v-else)
 						router-link(to="/autentificar") Únete a Plendo
 				a.button-collapse(href="#", data-activates="lateral")

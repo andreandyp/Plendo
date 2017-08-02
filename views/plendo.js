@@ -23,6 +23,7 @@ var store = require("./store");
 
 //Rutas
 var router = new VueRouter({
+    mode: "history",
     routes: [
         { path: "/", component: api },
         { path: "/autentificar", component: autentificar }
@@ -35,7 +36,9 @@ new Vue({
     store,
     router,
     components: {
-        inicio
+        inicio,
+        api,
+        autentificar
     },
     //Necesario para que se muestre
     render: createElement => createElement(inicio)

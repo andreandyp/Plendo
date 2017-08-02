@@ -1,12 +1,14 @@
 const Vue = require("vue"),
-    Vuex = require("vuex"),
-    VueRouter = require("vue-router");
+    VueRouter = require("vue-router"),
+    Vuex = require("vuex");
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.config.devtools = false;
 Vue.config.productionTip = false;
 
-var router = new VueRouter();
+var router = new VueRouter({
+    mode: "history"
+});
 
 var store = new Vuex.Store({
     state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false},
@@ -32,7 +34,7 @@ var store = new Vuex.Store({
                 if (!response.body.error) {
                     state.usuario = response.body;
                     state.autentificado = true;
-                    router.push("/");
+                    window.location.href = "/";
                 } else {
                     Materialize.toast(response.body.error,3000);
                 }
@@ -46,7 +48,7 @@ var store = new Vuex.Store({
                 if (!response.body.error) {
                     state.usuario = response.body;
                     state.autentificado = true;
-                    router.push("/");
+                    window.location.href = "/";
                 } else {
                     Materialize.toast(response.body.error,3000);
                 }

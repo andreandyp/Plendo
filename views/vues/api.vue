@@ -11,7 +11,7 @@ div
 				strong {{queja.nombre}} 
 				| @{{queja.usuario}} dice:
 			p {{queja.quejas.texto}}
-			p.right-align {{queja.quejas.fechaHora | mostrarFecha}}
+			p.right-align {{queja.fechaHora | mostrarFecha}}
 </template>
 
 <script>

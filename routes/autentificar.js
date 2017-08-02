@@ -3,6 +3,10 @@ var router = express.Router();
 
 module.exports = (passport) => {
 
+    router.get("/", (req,res) => {
+        res.render("inicio");
+    });
+
     //Verificar si un usuario ha iniciado sesión
     router.get("/exito",(req,res) => {
         res.json({usuario: req.user?req.user:null});

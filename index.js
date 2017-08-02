@@ -33,11 +33,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 //Rutas
-app.get("/",(req,res) => {
-  res.render("inicio2");
+
+app.get("/", (req,res) => {
+  res.render("inicio")
 });
 app.use('/api', api);
 app.use('/autentificar', autentificar);
+
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

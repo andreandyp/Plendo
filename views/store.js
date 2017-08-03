@@ -1,28 +1,22 @@
-const Vue = require("vue"),
-    VueRouter = require("vue-router"),
-    Vuex = require("vuex");
-Vue.use(Vuex);
-Vue.use(VueRouter);
+const Vue = require("vue");
 Vue.config.devtools = false;
 Vue.config.productionTip = false;
 
-var router = new VueRouter({
-    mode: "history"
-});
-
-var store = new Vuex.Store({
+var store = {
+    //Almacenamiento global que comparten todos los componentes
     state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false},
+    //Todas las mutaciones que usan los componentes
     mutations: {
         obtenerQuejas(state) {
             state.cargando = true;
-            Vue.http.get('/api/quejas').then(
+            Vue.http.get('/quejas').then(
             response => {
                 state.quejas = response.body;
                 state.cargando = false;
             }, response => Materialize.toast(response.body.error, 3000) );
         },
         subirQueja(state, queja) {
-            Vue.http.post("/api/quejas", { autor: state.usuario.usuario, texto: queja }).then(
+            Vue.http.post("/quejas", { autor: state.usuario.usuario, texto: queja }).then(
             response =>  { Materialize.toast("Queja subida", 3000) },
             response => Materialize.toast(response.body.error, 3000) );
         },
@@ -71,6 +65,6 @@ var store = new Vuex.Store({
             }, response => Materialize.toast(response.body.error, 3000) );
         }
     }
-});
+};
 
 module.exports = store;

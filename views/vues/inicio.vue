@@ -7,7 +7,7 @@ div
 				a.brand-logo.center(href="/") Plendo
 				ul.right.hide-on-med-and-down
 					li(v-if="$store.state.autentificado")
-						router-link(to="#" v-once) Hola {{ $store.state.usuario.nombre }}
+						router-link(:to="{ name: 'usuario', params: {usuario: $store.state.usuario.usuario } }" v-once) Hola {{ $store.state.usuario.nombre }}
 					li(v-if="$store.state.autentificado")
 						a(href="/" v-on:click="salir") Salir
 					li(v-else)

@@ -27,7 +27,7 @@
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
-    "express": "4.15.2",
+    "express": "^4.15.2",
     "express-history-spa-fallback": "^3.0.0",
     "express-session": "^1.15.3",
     "jquery": "^3.2.1",

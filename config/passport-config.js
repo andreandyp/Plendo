@@ -14,7 +14,9 @@ module.exports = function(passport){
 
     passport.use("registrar", new LocalStrategy({usernameField: "usuario", passwordField: "contraseña", passReqToCallback: true}, (req,usuario,contraseña,done) => {
         
-        db.get().collection("usuarios").findOne({ usuario: usuario }, {usuario: 1},
+        db.get().collection("usuarios").findOne(
+        { usuario: { $regex: new RegExp(usuario, "i") } }, 
+        {usuario: 1},
         (err, doc) => {
             if(err){
                 return done("Error en la db: "+err,false);
@@ -41,7 +43,9 @@ module.exports = function(passport){
 
     passport.use("iniciar", new LocalStrategy({usernameField: "usuario", passwordField: "contraseña",passReqToCallback: true}, (req,usuario,contraseña,done) => {
 
-        db.get().collection("usuarios").findOne({ usuario: usuario }, { usuario: 1, nombre: 1, contraseña: 1},
+        db.get().collection("usuarios").findOne(
+        { usuario: { $regex: new RegExp(usuario, "i") } },
+        { usuario: 1, nombre: 1, contraseña: 1},
         (err, doc) => {
             if(err){
                 return done("Error en la db: "+err, false);

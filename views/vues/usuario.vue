@@ -9,9 +9,10 @@ div.row
 		p Fecha de creación: {{fechaHora | mostrarFecha}}
 	div.col.s12.m12.l5
 		h3.center-align Quejas
-		div.quejas(v-for="queja in quejas")
-			p {{queja.texto}}
-			p.right-align {{queja.fechaHora | mostrarFecha}}
+		div.queja(v-for="queja in quejas")
+			router-link.enlace(:to="{ name: 'queja', params: { id: queja._id } }")
+				p {{queja.texto}}
+				p.right-align {{queja.fechaHora | mostrarFecha}}
 </template>
 
 <script>
@@ -32,9 +33,7 @@ export default {
 				this.quejas.push(queja.quejas);
 			}
 		},
-		response => {
-			Materialize.toast(response.body, 3000);
-		}
+		response => Materialize.toast(response.body, 3000)
 		);
 		this.$store.state.cargando = false;
 	},
@@ -56,9 +55,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.quejas{
-    border-bottom: 1px solid #ff6d00;
-}
-</style>

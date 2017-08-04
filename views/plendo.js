@@ -18,7 +18,7 @@ var inicio = require("./vues/inicio.vue"),
     api = require("./vues/api.vue"),
     autentificar = require("./vues/autentificar.vue");
     usuario = require("./vues/usuario.vue")
-    prueba = require("./vues/prueba.vue");
+    queja = require("./vues/queja.vue");
 
 //Estados y almacenamiento de Vuex
 var store = new Vuex.Store(require("./store"));
@@ -29,7 +29,8 @@ var router = new VueRouter({
     routes: [
         { path: "/", component: api, name: "api" },
         { path: "/autentificar", component: autentificar, name: "autentificar" },
-        { path: "/usuario/:usuario", component: usuario, name: "usuario" }
+        { path: "/usuario/:usuario", component: usuario, name: "usuario" },
+        { path: "/queja/:id", component: queja, name: "queja"}
     ]
 });
 

@@ -39,9 +39,12 @@ router.post("/", (req, res) => {
 
 //Obtener quejas por ID y eliminarla
 router.get("/:id", (req, res) => {
-    db.get().collection("usuarios").findOne({ quejas: { $elemMatch: { _id: new ObjectId(req.params.id) } } }, { _id: 0, usuario: 1, nombre: 1, fechaHora: 1, "quejas.texto": 1, "quejas.fechaHora": 1, "quejas.$": 1 }, (err, queja) => {
+    db.get().collection("usuarios").findOne(
+    { quejas: { $elemMatch: { _id: new ObjectId(req.params.id) } } },
+    { _id: 0, usuario: 1, nombre: 1, "quejas.texto": 1, "quejas.fechaHora": 1, "quejas.$": 1},
+    (err, queja) => {
         if (err) {
-            res.status(500).json({ mensaje: "Error en la db: " + err });
+            return res.status(500).send(err || "Usuario no encontrado");
         } else {
             res.json(queja);
         }

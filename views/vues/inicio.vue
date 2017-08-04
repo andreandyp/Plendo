@@ -11,19 +11,19 @@ div
 					li(v-if="$store.state.autentificado")
 						a(href="/" v-on:click="salir") Salir
 					li(v-else)
-						router-link(to="/autentificar") Únete a Plendo
+						router-link(:to="{ name: 'autentificar' }") Únete a Plendo
 				a.button-collapse(href="#", data-activates="lateral")
 					i.material-icons menu
 	ul#lateral.side-nav
 		li(v-if="$store.state.autentificado")
 			div.user-view
-				router-link(to="#" v-once)
+				router-link(:to="{ name: 'usuario', params: {usuario: $store.state.usuario.usuario } }" v-once)
 					span.black-text.name 
 					| Hola {{ $store.state.usuario.nombre }}
 		li(v-if="$store.state.autentificado")
 			a(href="#" v-on:click="salir") Salir
 		li(v-else)
-			router-link(to="/autentificar")
+			router-link(:to="{ name: 'autentificar' }")
 				i.material-icons perm_identity
 				| Únete a Plendo
 	div.progress(v-if="$store.state.cargando")

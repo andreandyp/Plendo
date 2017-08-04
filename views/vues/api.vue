@@ -7,11 +7,13 @@ div
 				textarea#queja.materialize-textarea(v-model="queja")
 				input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="¡Quéjate!")
 		div.col.s12.m12.l10.offset-l1.queja(v-for="queja in $store.state.quejas")
-			h5
-				strong {{queja.nombre}} 
-				| @{{queja.usuario}} dice:
-			p {{queja.quejas.texto}}
-			p.right-align {{queja.fechaHora | mostrarFecha}}
+			router-link.enlace(:to="{ name: 'usuario', params: { usuario: queja.usuario } }")
+				h5
+					strong {{queja.nombre}} 
+					| @{{queja.usuario}} dice:
+			router-link.enlace(:to="{ name: 'queja', params: { id: queja.quejas._id } }")
+				p {{queja.quejas.texto}}
+				p.right-align {{queja.fechaHora | mostrarFecha}}
 </template>
 
 <script>
@@ -54,7 +56,12 @@ textarea:focus{
     box-shadow: 0 1px 0 0 #ff6d00 !important;
 }
 .queja{
-    border-top: 1px solid #ff6d00 ;
-    border-bottom: 1px solid #ff6d00 ;
+    border-bottom: 1px solid #ff6d00;
+}
+a{
+	color: black;
+}
+.enlace:hover{
+	color: #ff6d00;
 }
 </style>

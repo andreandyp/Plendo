@@ -16,9 +16,10 @@ require('materialize');
 //Componentes .vue
 var inicio = require("./vues/inicio.vue"),
     api = require("./vues/api.vue"),
-    autentificar = require("./vues/autentificar.vue");
-    usuario = require("./vues/usuario.vue")
-    queja = require("./vues/queja.vue");
+    autentificar = require("./vues/autentificar.vue"),
+    usuario = require("./vues/usuario.vue"),
+    queja = require("./vues/queja.vue"),
+    pruebas = require("./vues/pruebas.vue");
 
 //Estados y almacenamiento de Vuex
 var store = new Vuex.Store(require("./store"));
@@ -30,7 +31,8 @@ var router = new VueRouter({
         { path: "/", component: api, name: "api" },
         { path: "/autentificar", component: autentificar, name: "autentificar" },
         { path: "/usuario/:usuario", component: usuario, name: "usuario" },
-        { path: "/queja/:id", component: queja, name: "queja"}
+        { path: "/queja/:id", component: queja, name: "queja"},
+        { path: "/pruebas", component: pruebas, name: pruebas }
     ]
 });
 

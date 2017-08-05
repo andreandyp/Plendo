@@ -1,6 +1,5 @@
 <template lang="pug">
 div.row
-	div.progress(v-if="this.$store.state.cargando")
 	div.col.s12.m12.l5.offset-l1
 		h3.center-align Información
 		h5
@@ -32,10 +31,10 @@ export default {
 			for(let queja of response.body){
 				this.quejas.push(queja.quejas);
 			}
+			this.$store.state.cargando = false;
 		},
-		response => Materialize.toast(response.body, 3000)
+		response => { Materialize.toast(response.body, 3000); this.$store.state.cargando = false; }
 		);
-		this.$store.state.cargando = false;
 	},
 	filters: {
 		mostrarFecha: (fecha) => {

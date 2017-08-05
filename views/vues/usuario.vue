@@ -5,13 +5,10 @@ div.row
 		h5
 			strong {{nombre}} 
 			| @{{usuario}}
-		p Fecha de creación: {{fechaHora | mostrarFecha}}
+		p Fecha de creación: {{fechaHora}}
 	div.col.s12.m12.l5
-		h3.center-align Quejas
-		div.queja(v-for="queja in quejas")
-			router-link.enlace(:to="{ name: 'queja', params: { id: queja._id } }")
-				p {{queja.texto}}
-				p.right-align {{queja.fechaHora | mostrarFecha}}
+		div(v-for="queja in quejas")
+			queja-comp(:texto="queja.texto", :fechaHora="queja.fechaHora" :id="queja._id")
 </template>
 
 <script>
@@ -20,14 +17,22 @@ export default {
 	data(){
 		return { nombre: "", usuario: "", quejas: []}
 	},
+	components:{
+		"queja-comp": require("./queja-comp.vue")
+	},
 	created() {
 		this.$store.state.cargando = true;
 		this.$http.get("/usuarios/"+this.$route.params.usuario).then(
 		response => {
+
+			//El primer elemento de la respuesta son los datos del usuario
+			//Se obtienen los datos del usuario y se saca del arreglo
 			this.nombre = response.body[0].nombre;
 			this.usuario = response.body[0].usuario;
 			this.fechaHora = response.body[0].fechaHora;
 			response.body.shift();
+
+			//Se obtienen las quejas y se agregan a los datos del componente
 			for(let queja of response.body){
 				this.quejas.push(queja.quejas);
 			}
@@ -35,22 +40,6 @@ export default {
 		},
 		response => { Materialize.toast(response.body, 3000); this.$store.state.cargando = false; }
 		);
-	},
-	filters: {
-		mostrarFecha: (fecha) => {
-			fecha = new Date(fecha);
-			var fechaHora = [];
-			fechaHora.push(fecha.getDate() < 10 ? "0" + fecha.getDate() : fecha.getDate());
-			fechaHora.push("/");
-			fechaHora.push((fecha.getMonth() + 1) < 10 ? "0" + (fecha.getMonth() + 1) : fecha.getMonth() + 1);
-			fechaHora.push("/");
-			fechaHora.push(fecha.getFullYear());
-			fechaHora.push(" a las ");
-			fechaHora.push(fecha.getHours());
-			fechaHora.push(":");
-			fechaHora.push(fecha.getMinutes() < 10 ? "0" + fecha.getMinutes() : fecha.getMinutes());
-			return fechaHora.join("");
-		}
 	}
 }
 </script>

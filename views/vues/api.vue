@@ -50,18 +50,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 textarea:focus{
     border-bottom: 1px solid #ff6d00 !important;
     box-shadow: 0 1px 0 0 #ff6d00 !important;
-}
-.queja{
-    border-bottom: 1px solid #ff6d00;
-}
-a{
-	color: black;
-}
-.enlace:hover{
-	color: #ff6d00;
 }
 </style>

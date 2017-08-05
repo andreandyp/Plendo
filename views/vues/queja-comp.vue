@@ -1,10 +1,15 @@
 <template lang="pug">
-div
-	router-link.enlace(:to="{ name: 'usuario', params: { usuario: this.usuario } }")
+div.queja
+	//Dependiendo de las propiedades recibidas, renderizará o no el enlace
+	//Además de que Vue-Router se pone mamón con las propiedades en los parámetros
+	router-link.enlace(v-if="this.usuario !== undefined" :to="{ name: 'usuario', params: { usuario: this.usuario } }")
 		h5
 			strong {{ nombre }} 
 			| @{{ usuario }} dice:
-	router-link.enlace(:to="{ name: 'queja', params: { id: this.id } }")
+	router-link.enlace(v-if="this.id !== undefined" :to="{ name: 'queja', params: { id: this.id } }")
+		p {{texto}}
+		p.right-align {{fechaHora | mostrarFecha}}
+	div(v-else)
 		p {{texto}}
 		p.right-align {{fechaHora | mostrarFecha}}
 </template>
@@ -30,3 +35,15 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.queja{
+    border-bottom: 1px solid #ff6d00;
+}
+.enlace{
+	color: black;
+}
+.enlace:hover{
+	color: #ff6d00;
+}
+</style>

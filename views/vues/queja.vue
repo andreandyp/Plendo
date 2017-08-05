@@ -7,7 +7,7 @@ div.row
 <script>
 export default {
 	data() {
-		return { queja: {}, hola: "hola" }
+		return { queja: {} }
 	},
 	components: {
 		"queja-comp": require("./queja-comp.vue")

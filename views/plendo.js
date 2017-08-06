@@ -19,9 +19,10 @@ var inicio = require("./vues/inicio.vue"),
     autentificar = require("./vues/autentificar.vue"),
     usuario = require("./vues/usuario.vue"),
     queja = require("./vues/queja.vue"),
-    pruebas = require("./vues/pruebas.vue");
+    acercaDe = require("./vues/acercaDe.vue")
+    error404 = require("./vues/error404.vue");
 
-//Estados y almacenamiento de Vuex
+//Estados y almacenamiento de Vuex para las sesiones en el navegador
 var store = new Vuex.Store(require("./store"));
 
 //Rutas
@@ -32,7 +33,8 @@ var router = new VueRouter({
         { path: "/autentificar", component: autentificar, name: "autentificar" },
         { path: "/usuario/:usuario", component: usuario, name: "usuario" },
         { path: "/queja/:id", component: queja, name: "queja"},
-        { path: "/pruebas", component: pruebas, name: pruebas }
+        { path: "/acercade", component: acercaDe, name: "acercaDe"},
+        { path: "*", component: error404, name: "error404" }
     ]
 });
 

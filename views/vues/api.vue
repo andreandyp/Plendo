@@ -6,53 +6,49 @@ div
 				h1.center-align Quéjate libremente
 				textarea#queja.materialize-textarea(v-model="queja")
 				input.btn.waves-effect.waves-light.orange.accent-4(type="submit" value="¡Quéjate!")
-		div.col.s12.m12.l10.offset-l1.queja(v-for="queja in $store.state.quejas")
-			router-link.enlace(:to="{ name: 'usuario', params: { usuario: queja.usuario } }")
-				h5
-					strong {{queja.nombre}} 
-					| @{{queja.usuario}} dice:
-			router-link.enlace(:to="{ name: 'queja', params: { id: queja.quejas._id } }")
-				p {{queja.quejas.texto}}
-				p.right-align {{queja.fechaHora | mostrarFecha}}
+			div.col.s12.m12.l5
+		div.col.s12.m12.l10.offset-l1
+			queja-comp(v-for="queja in quejas" :nombre="queja.nombre", :usuario="queja.usuario", :id="queja.quejas._id", :texto="queja.quejas.texto", :fechaHora="queja.quejas.fechaHora")
 </template>
 
 <script>
 export default {
 	data() {
-		return { queja: "" };
+		return { queja: "", quejas: [] };
 	},
-	filters: {
-		mostrarFecha: (fecha) => {
-			fecha = new Date(fecha);
-			var fechaHora = [];
-			fechaHora.push(fecha.getDate() < 10 ? "0" + fecha.getDate() : fecha.getDate());
-			fechaHora.push("/");
-			fechaHora.push((fecha.getMonth() + 1) < 10 ? "0" + (fecha.getMonth() + 1) : fecha.getMonth() + 1);
-			fechaHora.push("/");
-			fechaHora.push(fecha.getFullYear());
-			fechaHora.push(" a las ");
-			fechaHora.push(fecha.getHours());
-			fechaHora.push(":");
-			fechaHora.push(fecha.getMinutes() < 10 ? "0" + fecha.getMinutes() : fecha.getMinutes());
-			return fechaHora.join("");
-		}
+	components: {
+		"queja-comp": require("./queja-comp.vue")
 	},
-	created: function () {
-		this.$store.commit("obtenerQuejas");
+	created() {
+		this.obtenerQuejas();
 	},
 	methods: {
 		subirQueja() {
-			this.$store.commit("subirQueja", this.queja);
+            this.$http.post("/quejas", { autor: this.$store.state.usuario.usuario, texto: this.queja }).then(
+            response =>  { Materialize.toast("Queja subida", 3000) },
+            response => Materialize.toast(response.body.error, 3000) );
 			this.queja = "";
-			this.$store.commit("obtenerQuejas");
+			this.obtenerQuejas();
+		},
+		obtenerQuejas() {
+			this.$store.state.cargando = true;
+			this.$http.get('/quejas').then(
+			response => {
+				this.quejas = response.body;
+				this.$store.state.cargando = false;
+			},
+			response => {
+				Materialize.toast(response.body.error, 3000);
+				this.$store.state.cargando = false;
+			});
 		}
 	}
 }
 </script>
 
 <style scoped>
-textarea:focus{
-    border-bottom: 1px solid #ff6d00 !important;
-    box-shadow: 0 1px 0 0 #ff6d00 !important;
+textarea:focus {
+	border-bottom: 1px solid #ff6d00 !important;
+	box-shadow: 0 1px 0 0 #ff6d00 !important;
 }
 </style>

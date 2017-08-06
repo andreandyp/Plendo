@@ -5,20 +5,20 @@ div.row
 		h5
 			strong {{nombre}} 
 			| @{{usuario}}
-		p Fecha de creación: {{fechaHora}}
+		p Fecha de creación: {{fechaHora | mostrarFecha}}
 	div.col.s12.m12.l5
-		div(v-for="queja in quejas")
-			queja-comp(:texto="queja.texto", :fechaHora="queja.fechaHora" :id="queja._id")
+		queja-comp(v-for="queja in quejas" :texto="queja.texto", :fechaHora="queja.fechaHora" :id="queja._id")
 </template>
 
 <script>
-require("vue-resource");
+
+var quejacomp = require("./queja-comp.vue");
 export default {
 	data(){
-		return { nombre: "", usuario: "", quejas: []}
+		return { nombre: "", usuario: "", fechaHora: "", quejas: []}
 	},
 	components:{
-		"queja-comp": require("./queja-comp.vue")
+		"queja-comp": quejacomp
 	},
 	created() {
 		this.$store.state.cargando = true;
@@ -31,7 +31,6 @@ export default {
 			this.usuario = response.body[0].usuario;
 			this.fechaHora = response.body[0].fechaHora;
 			response.body.shift();
-
 			//Se obtienen las quejas y se agregan a los datos del componente
 			for(let queja of response.body){
 				this.quejas.push(queja.quejas);
@@ -40,6 +39,12 @@ export default {
 		},
 		response => { Materialize.toast(response.body, 3000); this.$store.state.cargando = false; }
 		);
+	},
+	filters: {
+		//Importa el filtro de las quejas para mostrar bien la fecha de creación del usuario
+		mostrarFecha(fechaISO){
+			return quejacomp.filters.mostrarFecha(fechaISO);
+		}
 	}
 }
 </script>

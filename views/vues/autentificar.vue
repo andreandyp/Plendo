@@ -38,6 +38,8 @@ export default{
 			datos: { usuario: "", contraseña: "" }
 		}
 	},
+	created(){
+	},
 	methods: {
         registrar() {
 			this.$store.commit("registrar", { nombre: this.nuevo.nombre, usuario: this.nuevo.usuario, contraseña: this.nuevo.contraseña });

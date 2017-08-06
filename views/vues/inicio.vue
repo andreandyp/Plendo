@@ -4,6 +4,9 @@ div
 	div.navbar-fixed
 		nav.orange.accent-4
 			div.nav-wrapper
+				ul.left.hide-on-med-and-down
+					li
+						router-link(:to="{ name: 'acercaDe' }") Acerca de
 				a.brand-logo.center(href="/") Plendo
 				ul.right.hide-on-med-and-down
 					li(v-if="$store.state.autentificado")
@@ -26,6 +29,8 @@ div
 			router-link(:to="{ name: 'autentificar' }")
 				i.material-icons perm_identity
 				| Únete a Plendo
+		li
+			router-link(:to="{ name: 'acercaDe' }") Acerca de
 	div.progress(v-if="$store.state.cargando")
 		div.indeterminate.orange.accent-4
 	router-view
@@ -45,7 +50,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .progress{
     background-color: #ffe0b2;
 }

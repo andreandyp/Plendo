@@ -4,22 +4,9 @@ Vue.config.productionTip = false;
 
 var store = {
     //Almacenamiento global que comparten todos los componentes
-    state: { quejas: [], usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false},
+    state: { usuario: { nombre: "", usuario: "" }, autentificado: false, cargando: false },
     //Todas las mutaciones que usan los componentes
     mutations: {
-        obtenerQuejas(state) {
-            state.cargando = true;
-            Vue.http.get('/quejas').then(
-            response => {
-                state.quejas = response.body;
-                state.cargando = false;
-            }, response => Materialize.toast(response.body.error, 3000) );
-        },
-        subirQueja(state, queja) {
-            Vue.http.post("/quejas", { autor: state.usuario.usuario, texto: queja }).then(
-            response =>  { Materialize.toast("Queja subida", 3000) },
-            response => Materialize.toast(response.body.error, 3000) );
-        },
         registrar(state, datos){
             state.cargando = true;
             Vue.http.post("/autentificar/registrar", datos).then(

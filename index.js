@@ -1,4 +1,5 @@
-var express = require('express');
+var compression = require("compression")
+var express = require('express'); 
 var session = require("express-session");
 var path = require('path');
 var logger = require('morgan');
@@ -14,8 +15,8 @@ require("./config/passport-config")(passport);
 
 //Rutas
 var quejas = require('./routes/quejas'),
+    usuarios = require("./routes/usuarios"),
     autentificar = require('./routes/autentificar')(passport);
-    usuarios = require("./routes/usuarios");
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.set('port', (process.env.PORT || 5000));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,10 +35,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
-
+app.disable("x-powered-by");
 //Rutas
 
 app.get("/", (req,res) => {
+  console.log(res.getHeader("x-powered-by"));
   res.render("inicio")
 });
 app.use('/quejas', quejas);

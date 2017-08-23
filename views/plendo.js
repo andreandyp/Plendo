@@ -19,7 +19,7 @@ var inicio = require("./vues/inicio.vue"),
     autentificar = require("./vues/autentificar.vue"),
     usuario = require("./vues/usuario.vue"),
     queja = require("./vues/queja.vue"),
-    acercaDe = require("./vues/acercaDe.vue")
+    acercaDe = require("./vues/acercaDe.vue"),
     error404 = require("./vues/error404.vue");
 
 //Estados y almacenamiento de Vuex para las sesiones en el navegador

@@ -38,14 +38,14 @@ div
 </template>
 
 <script>
-export default{
+export default {
+	created () {
+		this.$store.commit("verificar");
+	},
 	methods: {
 		salir() {
             this.$store.commit("salir");
         }
-	},
-	created () {
-		this.$store.commit("verificar");
 	}
 }
 </script>

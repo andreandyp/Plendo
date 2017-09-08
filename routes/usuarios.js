@@ -5,26 +5,26 @@ var db = require("../config/base");
 
 router.get("/:usuario", (req,res) => {
 
-    db.get().collection("usuarios").findOne(
-    {usuario: { $regex: new RegExp(req.params.usuario, "i") } }, 
-    {_id: 0, contraseña: 0, quejas: 0}, 
-    (err, resultado) => {
+	db.get().collection("usuarios").findOne(
+		{usuario: { $regex: new RegExp(req.params.usuario, "i") } }, 
+		{_id: 0, contraseña: 0, quejas: 0}, 
+		(err, resultado) => {
 
-        if(resultado == null || err){
-            return res.status(500).send(err || "Usuario no encontrado");
-        }
-        
-        db.get().collection("usuarios").aggregate([
-            {$match: {usuario: { $regex: new RegExp(req.params.usuario, "i") } } },
-            {$unwind: "$quejas"},
-            { $sort: { "quejas.fechaHora": -1 } },
-            {$project: { _id: 0, quejas: 1}}
-        ], (err, result) => {
-            result.unshift(resultado);
-            res.json(result);
-        });
+			if(resultado == null || err){
+				return res.status(500).send(err || "Usuario no encontrado");
+			}
+			
+			db.get().collection("usuarios").aggregate([
+				{$match: {usuario: { $regex: new RegExp(req.params.usuario, "i") } } },
+				{$unwind: "$quejas"},
+				{ $sort: { "quejas.fechaHora": -1 } },
+				{$project: { _id: 0, quejas: 1}}
+			], (err, result) => {
+				result.unshift(resultado);
+				res.json(result);
+			});
 
-    });
+		});
 });
 
 module.exports = router;

@@ -19,8 +19,8 @@ export default {
 	components: {
 		"queja-comp": require("./queja-comp.vue")
 	},
-	created() {
-		this.obtenerQuejas();
+	beforeMount(){
+		this.obtenerQuejas();		
 	},
 	methods: {
 		subirQueja() {

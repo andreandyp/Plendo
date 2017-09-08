@@ -24,7 +24,6 @@ export default {
 		this.$store.state.cargando = true;
 		this.$http.get("/usuarios/"+this.$route.params.usuario).then(
 		response => {
-
 			//El primer elemento de la respuesta son los datos del usuario
 			//Se obtienen los datos del usuario y se saca del arreglo
 			this.nombre = response.body[0].nombre;

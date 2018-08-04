@@ -1,5 +1,3 @@
-import { global } from "core-js/library/web/timers";
-
 "use strict";
 
 //Dependencias para Vue
